@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_otm_career_employer_form" model="ir.ui.view">
+        <field name="name">otm.career.employer.form</field>
+        <field name="model">otm.career.employer</field>
+        <field name="arch" type="xml">
+            <form string="Employer">
+                <header>
+                    <button name="action_approve" type="object" string="Approve"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_reject" type="object" string="Reject"
+                            class="btn-secondary" invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_job_openings" type="object"
+                                class="oe_stat_button" icon="fa-briefcase">
+                            <field name="job_opening_count" widget="statinfo" string="Job Openings"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="company_name" placeholder="Company Name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="contact_name"/>
+                            <field name="company_email"/>
+                            <field name="phone"/>
+                        </group>
+                        <group>
+                            <field name="place"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_otm_career_employer_list" model="ir.ui.view">
+        <field name="name">otm.career.employer.list</field>
+        <field name="model">otm.career.employer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="company_name"/>
+                <field name="contact_name"/>
+                <field name="company_email"/>
+                <field name="phone"/>
+                <field name="place"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'approved'"
+                       decoration-danger="state == 'rejected'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_otm_career_employer" model="ir.actions.act_window">
+        <field name="name">Employers</field>
+        <field name="res_model">otm.career.employer</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smile">No employers yet. They'll appear here once they apply through the career portal.</p>
+        </field>
+    </record>
+
+</odoo>

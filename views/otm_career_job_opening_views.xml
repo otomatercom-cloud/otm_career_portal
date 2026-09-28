@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_otm_career_job_opening_form" model="ir.ui.view">
+        <field name="name">otm.career.job.opening.form</field>
+        <field name="model">otm.career.job.opening</field>
+        <field name="arch" type="xml">
+            <form string="Job Opening">
+                <header>
+                    <button name="action_submit_for_approval" type="object" string="Submit for Approval"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" type="object" string="Approve"
+                            class="btn-primary" invisible="state != 'pending'"/>
+                    <button name="action_reject" type="object" string="Reject"
+                            class="btn-secondary" invisible="state != 'pending'"/>
+                    <button name="action_close" type="object" string="Close"
+                            class="btn-secondary" invisible="state != 'approved'"/>
+                    <button name="action_lock" type="object" string="Lock"
+                            class="btn-secondary" invisible="locked == True"/>
+                    <button name="action_unlock" type="object" string="Unlock"
+                            class="btn-secondary" invisible="locked == False"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,pending,approved,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_applicants" type="object"
+                                class="oe_stat_button" icon="fa-users">
+                            <field name="application_count" widget="statinfo" string="Applicants"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Locked" bg_color="text-bg-warning" invisible="not locked"/>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Job Title"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_name"/>
+                            <field name="employer_id"/>
+                            <field name="location"/>
+                            <field name="job_type"/>
+                            <field name="experience_required"/>
+                        </group>
+                        <group>
+                            <field name="salary"/>
+                            <field name="closing_date"/>
+                            <field name="active"/>
+                            <field name="application_link"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_otm_career_job_opening_list" model="ir.ui.view">
+        <field name="name">otm.career.job.opening.list</field>
+        <field name="model">otm.career.job.opening</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="company_name"/>
+                <field name="job_type"/>
+                <field name="location"/>
+                <field name="closing_date"/>
+                <field name="locked"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'approved'"
+                       decoration-danger="state == 'rejected'"
+                       decoration-muted="state == 'closed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_otm_career_job_opening_search" model="ir.ui.view">
+        <field name="name">otm.career.job.opening.search</field>
+        <field name="model">otm.career.job.opening</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="company_name"/>
+                <filter name="filter_approved" string="Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="filter_pending" string="Pending Approval" domain="[('state', '=', 'pending')]"/>
+                <group>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_type" string="Job Type" context="{'group_by': 'job_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_otm_career_job_opening" model="ir.actions.act_window">
+        <field name="name">Job Openings</field>
+        <field name="res_model">otm.career.job.opening</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_otm_career_job_opening_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smile">No job openings yet.</p>
+        </field>
+    </record>
+
+</odoo>

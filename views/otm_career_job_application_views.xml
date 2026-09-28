@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_otm_career_job_application_form" model="ir.ui.view">
+        <field name="name">otm.career.job.application.form</field>
+        <field name="model">otm.career.job.application</field>
+        <field name="arch" type="xml">
+            <form string="Job Application">
+                <header>
+                    <button name="action_shortlist" type="object" string="Shortlist"
+                            class="btn-primary" invisible="status != 'applied'"/>
+                    <button name="action_place" type="object" string="Mark Placed"
+                            class="btn-primary" invisible="status != 'shortlisted'"/>
+                    <button name="action_reject" type="object" string="Reject"
+                            class="btn-secondary" invisible="status in ('placed', 'rejected')"/>
+                    <field name="status" widget="statusbar" statusbar_visible="applied,shortlisted,placed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="candidate_id"/>
+                            <field name="job_id"/>
+                            <field name="date_applied"/>
+                        </group>
+                        <group>
+                            <field name="offer_letter" filename="offer_letter_name" invisible="status != 'placed'"/>
+                            <field name="offer_letter_name" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_otm_career_job_application_list" model="ir.ui.view">
+        <field name="name">otm.career.job.application.list</field>
+        <field name="model">otm.career.job.application</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="candidate_id"/>
+                <field name="job_id"/>
+                <field name="date_applied"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'placed'"
+                       decoration-info="status == 'shortlisted'"
+                       decoration-danger="status == 'rejected'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_otm_career_job_application" model="ir.actions.act_window">
+        <field name="name">Job Applications</field>
+        <field name="res_model">otm.career.job.application</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smile">No job applications yet.</p>
+        </field>
+    </record>
+
+</odoo>

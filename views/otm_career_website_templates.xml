@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="careers_job_list_page" name="Career Portal - Job Board">
+    <t t-call="website.layout">
+        <t t-set="head">
+            <link rel="stylesheet" type="text/css" href="/otm_career_portal/static/src/css/career.css"/>
+        </t>
+        <div class="otm-career-wrap">
+            <div class="otm-career-header">
+                <h1>Job Board</h1>
+                <p>Openings shared by our employer partners.</p>
+            </div>
+            <div class="otm-career-job-grid">
+                <t t-if="not jobs">
+                    <p class="otm-career-empty">No open positions right now — check back soon.</p>
+                </t>
+                <t t-foreach="jobs" t-as="job">
+                    <a t-attf-href="/careers/jobs/#{job.id}" class="otm-career-job-card">
+                        <h3 t-field="job.name"/>
+                        <div class="otm-career-job-meta">
+                            <span t-field="job.company_name"/>
+                            <span t-if="job.location"> · <t t-esc="job.location"/></span>
+                        </div>
+                        <div class="otm-career-job-tags">
+                            <span class="otm-career-tag" t-if="job.job_type" t-esc="dict(job._fields['job_type'].selection).get(job.job_type)"/>
+                            <span class="otm-career-tag" t-if="job.experience_required" t-esc="dict(job._fields['experience_required'].selection).get(job.experience_required)"/>
+                        </div>
+                    </a>
+                </t>
+            </div>
+        </div>
+    </t>
+</template>
+
+<template id="careers_job_not_found_page" name="Career Portal - Job Not Found">
+    <t t-call="website.layout">
+        <t t-set="head">
+            <link rel="stylesheet" type="text/css" href="/otm_career_portal/static/src/css/career.css"/>
+        </t>
+        <div class="otm-career-wrap">
+            <p class="otm-career-empty">This job posting isn't available anymore. <a href="/careers/jobs">Back to Job Board</a></p>
+        </div>
+    </t>
+</template>
+
+<template id="careers_job_detail_page" name="Career Portal - Job Detail">
+    <t t-call="website.layout">
+        <t t-set="head">
+            <link rel="stylesheet" type="text/css" href="/otm_career_portal/static/src/css/career.css"/>
+        </t>
+        <div class="otm-career-wrap otm-career-job-detail">
+            <a href="/careers/jobs" class="otm-career-back">&#8592; Job Board</a>
+            <h1 t-field="job.name"/>
+            <div class="otm-career-job-meta">
+                <span t-field="job.company_name"/>
+                <span t-if="job.location"> · <t t-esc="job.location"/></span>
+                <span t-if="job.salary"> · <t t-esc="job.salary"/></span>
+            </div>
+            <div class="otm-career-job-tags">
+                <span class="otm-career-tag" t-if="job.job_type" t-esc="dict(job._fields['job_type'].selection).get(job.job_type)"/>
+                <span class="otm-career-tag" t-if="job.experience_required" t-esc="dict(job._fields['experience_required'].selection).get(job.experience_required)"/>
+                <span class="otm-career-tag" t-if="job.closing_date">Closes <t t-esc="job.closing_date"/></span>
+            </div>
+            <div class="otm-career-job-description" t-field="job.description"/>
+
+            <t t-if="applied">
+                <div class="otm-career-alert otm-career-alert-success">Application submitted! Our placement team will be in touch.</div>
+            </t>
+            <t t-if="error == 'not_found'">
+                <div class="otm-career-alert otm-career-alert-error">We couldn't find a registered candidate with that phone + email. Please register on the Placement portal first.</div>
+            </t>
+            <t t-if="error == 'already_applied'">
+                <div class="otm-career-alert otm-career-alert-error">You've already applied to this job.</div>
+            </t>
+            <t t-if="error == 'failed'">
+                <div class="otm-career-alert otm-career-alert-error">Something went wrong. Please try again.</div>
+            </t>
+
+            <t t-if="job.application_link">
+                <a t-att-href="job.application_link" target="_blank" class="otm-career-btn">Apply Now (External)</a>
+            </t>
+            <t t-else="">
+                <form t-attf-action="/careers/jobs/#{job.id}/apply" method="post" class="otm-career-apply-form">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <label>Your Registered Phone Number
+                        <input type="text" name="phone" required="1"/>
+                    </label>
+                    <label>Your Registered Email
+                        <input type="email" name="email" required="1"/>
+                    </label>
+                    <button type="submit" class="otm-career-btn">Apply Now</button>
+                </form>
+            </t>
+        </div>
+    </t>
+</template>
+
+<template id="careers_employer_apply_page" name="Career Portal - Employer Application">
+    <t t-call="website.layout">
+        <t t-set="head">
+            <link rel="stylesheet" type="text/css" href="/otm_career_portal/static/src/css/career.css"/>
+        </t>
+        <div class="otm-career-wrap otm-career-narrow">
+            <h1>Post Jobs With Us</h1>
+            <p>Register your company to post openings for our students.</p>
+
+            <t t-if="success">
+                <div class="otm-career-alert otm-career-alert-success">
+                    Thanks! Your application has been submitted for review. We'll reach out once it's approved.
+                </div>
+            </t>
+            <t t-else="">
+                <t t-if="error == 'missing'">
+                    <div class="otm-career-alert otm-career-alert-error">Please fill in all required fields.</div>
+                </t>
+                <t t-if="error == 'duplicate'">
+                    <div class="otm-career-alert otm-career-alert-error">An employer with this company email is already registered.</div>
+                </t>
+                <t t-if="error == 'failed'">
+                    <div class="otm-career-alert otm-career-alert-error">Something went wrong. Please try again.</div>
+                </t>
+                <form action="/careers/employer/apply/submit" method="post" class="otm-career-form">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <label>Company Name
+                        <input type="text" name="company_name" required="1"/>
+                    </label>
+                    <label>Contact Person
+                        <input type="text" name="contact_name" required="1"/>
+                    </label>
+                    <label>Company Email
+                        <input type="email" name="company_email" required="1"/>
+                    </label>
+                    <label>Phone Number
+                        <input type="text" name="phone" required="1"/>
+                    </label>
+                    <label>Place
+                        <input type="text" name="place"/>
+                    </label>
+                    <button type="submit" class="otm-career-btn">Submit Application</button>
+                </form>
+            </t>
+        </div>
+    </t>
+</template>
+
+<template id="careers_portal_not_found_page" name="Career Portal - Invalid Link">
+    <t t-call="website.layout">
+        <t t-set="head">
+            <link rel="stylesheet" type="text/css" href="/otm_career_portal/static/src/css/career.css"/>
+        </t>
+        <div class="otm-career-wrap">
+            <p class="otm-career-empty">This career portal link is invalid or has expired.</p>
+        </div>
+    </t>
+</template>
+
+<template id="careers_portal_home_page" name="Career Portal - My Career Portal">
+    <t t-call="website.layout">
+        <t t-set="head">
+            <link rel="stylesheet" type="text/css" href="/otm_career_portal/static/src/css/career.css"/>
+        </t>
+        <div class="otm-career-wrap">
+            <div class="otm-career-header">
+                <h1>My Career Portal</h1>
+                <p>Welcome, <t t-esc="candidate.name"/>.</p>
+            </div>
+
+            <t t-if="success == 'referral'">
+                <div class="otm-career-alert otm-career-alert-success">Referral submitted — thank you!</div>
+            </t>
+            <t t-if="success == 'applied'">
+                <div class="otm-career-alert otm-career-alert-success">Application submitted!</div>
+            </t>
+            <t t-if="success == 'cv'">
+                <div class="otm-career-alert otm-career-alert-success">Resume uploaded and sent for review.</div>
+            </t>
+            <t t-if="error == 'already_applied'">
+                <div class="otm-career-alert otm-career-alert-error">You've already applied to this job.</div>
+            </t>
+            <t t-if="error in ('missing', 'failed', 'job_unavailable')">
+                <div class="otm-career-alert otm-career-alert-error">Something went wrong. Please check the details and try again.</div>
+            </t>
+
+            <div class="otm-career-portal-grid">
+                <section class="otm-career-panel">
+                    <h2>Open Jobs</h2>
+                    <t t-if="not open_jobs">
+                        <p class="otm-career-empty">No open positions right now.</p>
+                    </t>
+                    <t t-foreach="open_jobs" t-as="job">
+                        <div class="otm-career-portal-job-row">
+                            <div>
+                                <strong t-field="job.name"/>
+                                <div class="otm-career-job-meta">
+                                    <span t-field="job.company_name"/>
+                                    <span t-if="job.location"> · <t t-esc="job.location"/></span>
+                                </div>
+                            </div>
+                            <t t-if="job.id in applied_job_ids">
+                                <span class="otm-career-tag">Applied</span>
+                            </t>
+                            <t t-else="">
+                                <form t-attf-action="/careers/portal/#{candidate.access_token}/apply/#{job.id}" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <button type="submit" class="otm-career-btn otm-career-btn-sm">Apply</button>
+                                </form>
+                            </t>
+                        </div>
+                    </t>
+                </section>
+
+                <section class="otm-career-panel">
+                    <h2>Refer a Friend</h2>
+                    <form t-attf-action="/careers/portal/#{candidate.access_token}/refer" method="post" class="otm-career-form">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <label>Their Name
+                            <input type="text" name="name" required="1"/>
+                        </label>
+                        <label>Their Phone Number
+                            <input type="text" name="phone" required="1"/>
+                        </label>
+                        <label>Their Email
+                            <input type="email" name="email"/>
+                        </label>
+                        <label>Note
+                            <textarea name="note" rows="2"></textarea>
+                        </label>
+                        <button type="submit" class="otm-career-btn">Submit Referral</button>
+                    </form>
+                </section>
+
+                <section class="otm-career-panel">
+                    <h2>Upload Resume / CV</h2>
+                    <p class="otm-career-job-meta">
+                        Status: <t t-esc="dict(candidate._fields['cv_status'].selection).get(candidate.cv_status)"/>
+                    </p>
+                    <form t-attf-action="/careers/portal/#{candidate.access_token}/cv/upload" method="post"
+                          enctype="multipart/form-data" class="otm-career-form">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="file" name="resume" required="1"/>
+                        <button type="submit" class="otm-career-btn">Upload</button>
+                    </form>
+                </section>
+
+                <section class="otm-career-panel" t-if="notices">
+                    <h2>Notices</h2>
+                    <t t-foreach="notices" t-as="notice">
+                        <div t-attf-class="otm-career-notice #{'otm-career-notice-high' if notice.priority == 'high' else ''}">
+                            <strong t-esc="notice.title"/>
+                            <p t-esc="notice.message"/>
+                        </div>
+                    </t>
+                </section>
+
+                <section class="otm-career-panel" t-if="materials">
+                    <h2>Learning Materials</h2>
+                    <t t-foreach="materials" t-as="material">
+                        <div class="otm-career-material">
+                            <strong t-esc="material.name"/>
+                            <div t-field="material.content"/>
+                        </div>
+                    </t>
+                </section>
+
+                <section class="otm-career-panel" t-if="videos">
+                    <h2>Learning Videos</h2>
+                    <t t-foreach="videos" t-as="video">
+                        <div class="otm-career-video">
+                            <strong t-esc="video.title"/>
+                            <t t-raw="video.embed_code"/>
+                        </div>
+                    </t>
+                </section>
+
+                <section class="otm-career-panel" t-if="links">
+                    <h2>Useful Links</h2>
+                    <ul>
+                        <li t-foreach="links" t-as="link">
+                            <a t-att-href="link.url" target="_blank" t-esc="link.name"/>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </t>
+</template>
+
+</odoo>

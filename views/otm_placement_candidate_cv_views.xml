@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_otm_placement_candidate_form_cv_inherit" model="ir.ui.view">
+        <field name="name">otm.placement.candidate.form.cv.inherit</field>
+        <field name="model">otm.placement.candidate</field>
+        <field name="inherit_id" ref="otm_placement_management.view_otm_placement_candidate_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_job_applications" type="object"
+                        class="oe_stat_button" icon="fa-briefcase">
+                    <field name="job_application_count" widget="statinfo" string="Job Applications"/>
+                </button>
+                <button name="action_view_referrals" type="object"
+                        class="oe_stat_button" icon="fa-share-alt">
+                    <field name="referral_count" widget="statinfo" string="Referrals"/>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='page_old_erp_check']" position="before">
+                <page string="CV / Resume">
+                    <div class="d-flex align-items-center mb-3" style="gap: 12px;">
+                        <button name="action_approve_cv" type="object" string="Approve CV"
+                                class="btn-primary" invisible="cv_status != 'submitted'"/>
+                        <button name="action_reject_cv" type="object" string="Reject CV"
+                                class="btn-secondary" invisible="cv_status != 'submitted'"/>
+                        <field name="cv_status" widget="badge"
+                               decoration-success="cv_status == 'approved'"
+                               decoration-danger="cv_status == 'rejected'"
+                               decoration-info="cv_status == 'submitted'"
+                               decoration-muted="cv_status == 'not_uploaded'"
+                               readonly="1"/>
+                    </div>
+                    <field name="resume" filename="resume_filename"/>
+                    <field name="resume_filename" invisible="1"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

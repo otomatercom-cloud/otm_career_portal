@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_otm_career_learning_material_form" model="ir.ui.view">
+        <field name="name">otm.career.learning.material.form</field>
+        <field name="model">otm.career.learning.material</field>
+        <field name="arch" type="xml">
+            <form string="Learning Material">
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Title"/></h1>
+                    </div>
+                    <group>
+                        <field name="sequence"/>
+                        <field name="active"/>
+                    </group>
+                    <field name="content"/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_otm_career_learning_material_list" model="ir.ui.view">
+        <field name="name">otm.career.learning.material.list</field>
+        <field name="model">otm.career.learning.material</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_otm_career_learning_material" model="ir.actions.act_window">
+        <field name="name">Learning Materials</field>
+        <field name="res_model">otm.career.learning.material</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

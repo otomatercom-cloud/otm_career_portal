@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_otm_career_root" name="Career Portal" sequence="46"/>
+
+    <menuitem id="menu_otm_career_job_opening" name="Job Openings"
+              parent="menu_otm_career_root" action="action_otm_career_job_opening" sequence="10"/>
+
+    <menuitem id="menu_otm_career_job_application" name="Job Applications"
+              parent="menu_otm_career_root" action="action_otm_career_job_application" sequence="20"/>
+
+    <menuitem id="menu_otm_career_employer" name="Employers"
+              parent="menu_otm_career_root" action="action_otm_career_employer" sequence="30"/>
+
+    <menuitem id="menu_otm_career_referral" name="Referrals"
+              parent="menu_otm_career_root" action="action_otm_career_referral" sequence="40"/>
+
+    <menuitem id="menu_otm_career_learning" name="Learning Content"
+              parent="menu_otm_career_root" sequence="50"/>
+    <menuitem id="menu_otm_career_learning_material" name="Materials"
+              parent="menu_otm_career_learning" action="action_otm_career_learning_material" sequence="10"/>
+    <menuitem id="menu_otm_career_learning_video" name="Videos"
+              parent="menu_otm_career_learning" action="action_otm_career_learning_video" sequence="20"/>
+    <menuitem id="menu_otm_career_link" name="Useful Links"
+              parent="menu_otm_career_learning" action="action_otm_career_link" sequence="30"/>
+
+    <menuitem id="menu_otm_career_notice" name="Notice Board"
+              parent="menu_otm_career_root" action="action_otm_career_notice" sequence="60"/>
+
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_otm_career_link_form" model="ir.ui.view">
+        <field name="name">otm.career.link.form</field>
+        <field name="model">otm.career.link</field>
+        <field name="arch" type="xml">
+            <form string="Useful Link">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="url"/>
+                        <field name="sequence"/>
+                        <field name="active"/>
+                    </group>
+                    <field name="description"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_otm_career_link_list" model="ir.ui.view">
+        <field name="name">otm.career.link.list</field>
+        <field name="model">otm.career.link</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="url"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_otm_career_link" model="ir.actions.act_window">
+        <field name="name">Useful Links</field>
+        <field name="res_model">otm.career.link</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

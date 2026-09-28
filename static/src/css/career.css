@@ -1,0 +1,216 @@
+/* Career Portal — reuses the same green accent as the Placement module for
+   visual consistency across the two public-facing surfaces. */
+:root {
+    --otm-career-accent: #16a34a;
+    --otm-career-accent-dark: #15803d;
+    --otm-career-border: #e5e7eb;
+    --otm-career-text-muted: #6b7280;
+}
+
+.otm-career-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 16px 64px;
+}
+
+.otm-career-narrow {
+    max-width: 560px;
+}
+
+.otm-career-header h1 {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.otm-career-header p {
+    color: var(--otm-career-text-muted);
+    margin-bottom: 24px;
+}
+
+.otm-career-empty {
+    color: var(--otm-career-text-muted);
+    padding: 32px 0;
+}
+
+.otm-career-back {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: var(--otm-career-accent);
+    text-decoration: none;
+}
+
+.otm-career-job-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.otm-career-job-card {
+    display: block;
+    border: 1px solid var(--otm-career-border);
+    border-radius: 10px;
+    padding: 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.otm-career-job-card:hover {
+    border-color: var(--otm-career-accent);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+}
+
+.otm-career-job-card h3 {
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+}
+
+.otm-career-job-meta {
+    color: var(--otm-career-text-muted);
+    font-size: .9rem;
+    margin-bottom: 8px;
+}
+
+.otm-career-job-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.otm-career-tag {
+    display: inline-block;
+    background: #f0fdf4;
+    color: var(--otm-career-accent-dark);
+    border: 1px solid #bbf7d0;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: .78rem;
+}
+
+.otm-career-job-detail h1 {
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.otm-career-job-description {
+    margin: 20px 0;
+    line-height: 1.6;
+}
+
+.otm-career-alert {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: .92rem;
+}
+
+.otm-career-alert-success {
+    background: #f0fdf4;
+    color: var(--otm-career-accent-dark);
+    border: 1px solid #bbf7d0;
+}
+
+.otm-career-alert-error {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.otm-career-form, .otm-career-apply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 420px;
+}
+
+.otm-career-form label, .otm-career-apply-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: .85rem;
+    color: var(--otm-career-text-muted);
+}
+
+.otm-career-form input, .otm-career-form textarea,
+.otm-career-apply-form input {
+    border: 1px solid var(--otm-career-border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: .95rem;
+}
+
+.otm-career-btn {
+    display: inline-block;
+    background: var(--otm-career-accent);
+    color: #fff !important;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: .95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    width: fit-content;
+}
+
+.otm-career-btn:hover {
+    background: var(--otm-career-accent-dark);
+    color: #fff !important;
+}
+
+.otm-career-btn-sm {
+    padding: 6px 14px;
+    font-size: .85rem;
+}
+
+.otm-career-portal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.otm-career-panel {
+    border: 1px solid var(--otm-career-border);
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.otm-career-panel h2 {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+}
+
+.otm-career-portal-job-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--otm-career-border);
+    gap: 12px;
+}
+
+.otm-career-portal-job-row:last-child {
+    border-bottom: none;
+}
+
+.otm-career-notice {
+    border-left: 3px solid var(--otm-career-accent);
+    padding: 8px 12px;
+    margin-bottom: 10px;
+}
+
+.otm-career-notice-high {
+    border-left-color: #dc2626;
+}
+
+.otm-career-material, .otm-career-video {
+    margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+    .otm-career-portal-job-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_otm_career_referral_form" model="ir.ui.view">
+        <field name="name">otm.career.referral.form</field>
+        <field name="model">otm.career.referral</field>
+        <field name="arch" type="xml">
+            <form string="Referral">
+                <header>
+                    <button name="action_approve" type="object" string="Approve"
+                            class="btn-primary" invisible="status != 'submitted'"/>
+                    <button name="action_reject" type="object" string="Reject"
+                            class="btn-secondary" invisible="status != 'submitted'"/>
+                    <button name="action_retry_old_erp_sync" type="object" string="Retry Old ERP Sync"
+                            class="btn-secondary"
+                            invisible="status != 'approved' or old_erp_lead_id"/>
+                    <field name="status" widget="statusbar" statusbar_visible="submitted,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Referred Candidate Name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="referrer_id"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="referral_earning"/>
+                            <field name="old_erp_lead_id" readonly="1"/>
+                            <field name="old_erp_lead_status" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="note"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_otm_career_referral_list" model="ir.ui.view">
+        <field name="name">otm.career.referral.list</field>
+        <field name="model">otm.career.referral</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="referrer_id"/>
+                <field name="phone"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'approved'"
+                       decoration-danger="status == 'rejected'"/>
+                <field name="old_erp_lead_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_otm_career_referral" model="ir.actions.act_window">
+        <field name="name">Referrals</field>
+        <field name="res_model">otm.career.referral</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smile">No referrals yet.</p>
+        </field>
+    </record>
+
+</odoo>
